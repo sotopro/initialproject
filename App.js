@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity, Modal } from 'react-native';
 
 export default function App() {
   const [item, setItem] = useState('');
   const [itemList, setItemList] = useState([]);
+  const [itemSelected, setItemSelected] = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
 
   const inputvalue = item.trim();
 
@@ -17,7 +19,7 @@ export default function App() {
         setItemList([
           ...itemList,
           {
-            id: Math.random().toString(),
+            id: itemList.length + 1,
             value: item
           } 
         ])
@@ -26,13 +28,21 @@ export default function App() {
   }
 
   const onDeleteItem = (id) => {
-    console.log(id)
+    setItemList(currentItems => currentItems.filter(item => item.id !== id));
+    setItemSelected({});
+    setModalVisible(!modalVisible);
   }
+
+  const onHandlerModal = (id) => {
+    setItemSelected(itemList.find(item => item.id === id));
+    setModalVisible(!modalVisible);
+  }
+
 
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
       <Text style={styles.item}>{item.value}</Text>
-      <TouchableOpacity onPress={() => onDeleteItem(item.id)}>
+      <TouchableOpacity onPress={() => onHandlerModal(item.id)}>
         <Text style={styles.delete}>X</Text>
       </TouchableOpacity>
     </View>
@@ -58,6 +68,21 @@ export default function App() {
         style
       />
      </View>
+     <Modal animationType='slide' visible={modalVisible}>
+      <View style={styles.modalContentContainer}>
+        <Text style={styles.modalTitle}>Detalle de la lista</Text>
+      </View>
+      <View style={styles.modalContentContainer}>
+        <Text style={styles.modalMessage}> ¿Estás seguro que deseas eliminar?</Text>
+      </View>
+      <View style={styles.modalContentContainer}>
+        <Text style={styles.modalItem}>{itemSelected.value}</Text>
+      </View>
+      <View style={styles.modalButton}>
+        <Button title='Eliminar' onPress={() => onDeleteItem(itemSelected.id)} color='#7D8CC4' />
+        <Button title='Cancelar' onPress={() => setModalVisible(!modalVisible)} color='#cccccc' />
+      </View>
+     </Modal>
     </View>
   );
 }
@@ -112,5 +137,26 @@ const styles = StyleSheet.create({
   delete: {
     color : '#fff',
     fontSize: 18,
-  }
+  },
+  modalContentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  modalTitle: {
+    fontSize: 16,
+  },
+  modalMessage: {
+    fontSize: 14,
+  },
+  modalItem: {
+    fontSize: 15,
+    color: '#7D8CC4',
+    fontWeight: 'bold',
+  },
+  modalButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginHorizontal: 20,
+  },
 });
