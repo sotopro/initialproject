@@ -55,6 +55,7 @@ export default function App() {
         data={itemList}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
+        style
       />
      </View>
     </View>
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 40,
+    paddingTop: 40,
     paddingHorizontal: 20,
   },
   input: {
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#7D8CC4',
   },
   itemList: {
+    backgroundColor: '#fff',
     flex: 1,
     marginVertical: 20,
     marginHorizontal: 20,
@@ -91,6 +93,17 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     backgroundColor: '#7D8CC4',
     padding: 20,
+    borderRadius: 7,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
+
   },
   item: {
     fontSize: 18,
