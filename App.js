@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity } from 'react-native';
 
 export default function App() {
   const [item, setItem] = useState('');
@@ -25,6 +25,19 @@ export default function App() {
       }
   }
 
+  const onDeleteItem = (id) => {
+    console.log(id)
+  }
+
+  const renderItem = ({ item }) => (
+    <View style={styles.itemContainer}>
+      <Text style={styles.item}>{item.value}</Text>
+      <TouchableOpacity onPress={() => onDeleteItem(item.id)}>
+        <Text style={styles.delete}>X</Text>
+      </TouchableOpacity>
+    </View>
+  )
+
   return (
     <View style={styles.container}>
      <View style={styles.inputContainer}>
@@ -38,11 +51,11 @@ export default function App() {
       <Button title='Add' color='#7D8CC4' onPress={addItem} disabled={inputvalue === ''}/>
      </View>
      <View style={styles.itemList}>
-      {itemList.map((item) => (
-        <View key={`item-${item.id}`} style={styles.itemContainer}>
-          <Text style={styles.item}>{item.value}</Text>
-        </View>
-      ))}
+      <FlatList 
+        data={itemList}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
      </View>
     </View>
   );
@@ -65,7 +78,26 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#7D8CC4',
   },
-  itemList: {},
-  itemContainer: {},
-  item: {}
+  itemList: {
+    flex: 1,
+    marginVertical: 20,
+    marginHorizontal: 20,
+  },
+  itemContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 10,
+    backgroundColor: '#7D8CC4',
+    padding: 20,
+  },
+  item: {
+    fontSize: 18,
+    color: '#ffffff'
+  },
+  delete: {
+    color : '#fff',
+    fontSize: 18,
+  }
 });
