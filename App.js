@@ -20,13 +20,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 40,
     paddingHorizontal: 20,
   },
   input: {
+    width: '80%',
     borderBottomWidth: 1,
-    paddingVertical: 10,
     borderBottomColor: '#7D8CC4',
-    marginVertical: 20,
   }
 });
