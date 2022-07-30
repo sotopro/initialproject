@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
+import { CustomModal } from './components/index';
 
 export default function App() {
   const [item, setItem] = useState('');
@@ -11,7 +12,7 @@ export default function App() {
 
 
   const onChangeText = (text) => {
-    setItem(text);
+    setItem(text)
   }
 
   const addItem = () => {
@@ -28,12 +29,14 @@ export default function App() {
   }
 
   const onDeleteItem = (id) => {
+    console.warn('onDeleteItem id', id);
     setItemList(currentItems => currentItems.filter(item => item.id !== id));
     setItemSelected({});
     setModalVisible(!modalVisible);
   }
 
   const onHandlerModal = (id) => {
+    console.warn('onHandlerModal id', id);
     setItemSelected(itemList.find(item => item.id === id));
     setModalVisible(!modalVisible);
   }
@@ -49,7 +52,7 @@ export default function App() {
   )
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
      <View style={styles.inputContainer}>
       <TextInput 
         style={styles.input}
@@ -68,22 +71,24 @@ export default function App() {
         style
       />
      </View>
-     <Modal animationType='slide' visible={modalVisible}>
-      <View style={styles.modalContentContainer}>
-        <Text style={styles.modalTitle}>Detalle de la lista</Text>
-      </View>
-      <View style={styles.modalContentContainer}>
-        <Text style={styles.modalMessage}> ¿Estás seguro que deseas eliminar?</Text>
-      </View>
-      <View style={styles.modalContentContainer}>
-        <Text style={styles.modalItem}>{itemSelected.value}</Text>
-      </View>
-      <View style={styles.modalButton}>
-        <Button title='Eliminar' onPress={() => onDeleteItem(itemSelected.id)} color='#7D8CC4' />
-        <Button title='Cancelar' onPress={() => setModalVisible(!modalVisible)} color='#cccccc' />
-      </View>
-     </Modal>
-    </View>
+     <CustomModal animationType='slide' modalVisible={modalVisible}>
+        <View style={styles.modal}>
+          <View style={styles.modalContentContainer}>
+            <Text style={styles.modalTitle}>Detalle de la lista</Text>
+          </View>
+          <View style={styles.modalContentContainer}>
+            <Text style={styles.modalMessage}> ¿Estás seguro que deseas eliminar?</Text>
+          </View>
+          <View style={styles.modalContentContainer}>
+            <Text style={styles.modalItem}>{itemSelected.value}</Text>
+          </View>
+          <View style={styles.modalButton}>
+            <Button title='Eliminar' onPress={() => onDeleteItem(itemSelected.id)} color='#7D8CC4' />
+            <Button title='Cancelar' onPress={() => setModalVisible(!modalVisible)} color='#cccccc' />
+          </View>
+        </View>
+     </CustomModal>
+    </SafeAreaView>
   );
 }
 
@@ -96,7 +101,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 40,
     paddingHorizontal: 20,
   },
   input: {
@@ -128,7 +132,6 @@ const styles = StyleSheet.create({
     shadowRadius: 2.22,
 
     elevation: 3,
-
   },
   item: {
     fontSize: 18,
@@ -159,4 +162,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginHorizontal: 20,
   },
+  modal: {
+    flex: 1,
+    marginTop: 30
+  }
 });
