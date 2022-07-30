@@ -29,14 +29,12 @@ export default function App() {
   }
 
   const onDeleteItem = (id) => {
-    console.warn('onDeleteItem id', id);
     setItemList(currentItems => currentItems.filter(item => item.id !== id));
     setItemSelected({});
     setModalVisible(!modalVisible);
   }
 
   const onHandlerModal = (id) => {
-    console.warn('onHandlerModal id', id);
     setItemSelected(itemList.find(item => item.id === id));
     setModalVisible(!modalVisible);
   }
@@ -54,6 +52,7 @@ export default function App() {
         placeholder='Enter item'
         onPressButton={addItem}
         inputValue={inputvalue}
+        buttonText='Add'
       />
      <View style={styles.itemList}>
       <FlatList 
